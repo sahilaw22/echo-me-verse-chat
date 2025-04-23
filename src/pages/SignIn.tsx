@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LogoFull } from "@/assets/logo";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,8 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { FcGoogle } from "react-icons/fc";
 
-// Add support for controlled navigation in preview
-interface SignInProps {
-  onSignedIn?: () => void;
-  previewMode?: boolean;
-}
-
-export default function SignIn({ onSignedIn, previewMode = false }: SignInProps) {
+export default function SignIn() {
+  const navigate = useNavigate();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +19,8 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
+    // Simple validation
     if (!email || !password) {
       toast({
         title: "Error",
@@ -33,14 +29,16 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
       });
       return;
     }
+    
+    // Mock successful login
     toast({
       title: "Success",
       description: "Signed in successfully",
     });
-
+    
+    // Navigate to home page
     setTimeout(() => {
-      if (previewMode && onSignedIn) onSignedIn();
-      // Else: in real app, it would navigate to "/"
+      navigate("/");
     }, 1000);
   };
 
@@ -82,6 +80,7 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
           style={{ bottom: '-20%', right: '-20%' }}
         />
       </div>
+
       {isSigningIn ? (
         <div className="w-full max-w-sm z-10">
           <Button 
@@ -91,13 +90,16 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
           >
             &larr; Back
           </Button>
+          
           <Card className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-xl rounded-xl p-6">
             <form onSubmit={handleSignIn} className="space-y-4">
               <div className="flex justify-center mb-6">
                 <LogoFull />
               </div>
+              
               <h1 className="text-xl font-bold text-primary">Sign in to EchoMe</h1>
               <p className="text-muted-foreground">Enter your details to continue</p>
+              
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">Email</Label>
                 <Input 
@@ -109,6 +111,7 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
                   className="border-primary/50 bg-black/50 text-white focus:border-secondary"
                 />
               </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white">Password</Label>
                 <Input 
@@ -120,16 +123,19 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
                   className="border-primary/50 bg-black/50 text-white focus:border-secondary"
                 />
               </div>
+              
               <Button 
                 type="submit" 
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
               >
                 Sign In
               </Button>
+              
               <div className="relative flex items-center justify-center">
                 <div className="border-t border-white/10 absolute w-full"></div>
                 <span className="bg-black px-2 text-xs text-white/60 relative">OR</span>
               </div>
+              
               <Button 
                 type="button" 
                 variant="outline"
@@ -138,12 +144,13 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
               >
                 <FcGoogle className="mr-2 h-5 w-5" /> Sign in with Google
               </Button>
+              
               <div className="text-center">
                 <p className="text-muted-foreground text-sm">
                   Don't have an account? {" "}
-                  <span className="text-secondary hover:text-secondary/90 font-semibold" style={{ opacity: 0.7 }}>
-                    (Preview only)
-                  </span>
+                  <Link to="/signup" className="text-secondary hover:text-secondary/90 font-semibold">
+                    Sign up
+                  </Link>
                 </p>
               </div>
             </form>
@@ -161,8 +168,9 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
           >
-            <LogoFull className="mb-8" size="lg" />
+            <LogoFull className="mb-8" />
           </motion.div>
+          
           <div className="space-y-2">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Welcome to EchoMe
@@ -171,6 +179,7 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
               Transform your voice, play pranks, and have fun with friends!
             </p>
           </div>
+          
           <div className="w-full space-y-4 pt-4">
             <Button 
               onClick={() => setIsSigningIn(true)}
@@ -178,12 +187,13 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
             >
               Sign In
             </Button>
+            
             <Button 
               variant="outline" 
-              className="w-full py-6 text-lg border border-white/20 bg-black/60 text-white hover:bg-white/5 opacity-50 cursor-not-allowed"
-              disabled
+              asChild 
+              className="w-full py-6 text-lg border border-white/20 bg-black/60 text-white hover:bg-white/5"
             >
-              Create Account (Preview)
+              <Link to="/signup">Create Account</Link>
             </Button>
           </div>
         </motion.div>
@@ -191,6 +201,3 @@ export default function SignIn({ onSignedIn, previewMode = false }: SignInProps)
     </div>
   );
 }
-
-// ---
-// This file is now longer than 200 lines. It's time to refactor it into smaller components for maintainability.
