@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -14,13 +13,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, LogIn, Users, Share2, Lock, Copy, Music, MessageSquare, Phone } from "lucide-react";
+import { Plus, LogIn, Users, Share2, Lock, Copy, Music, MessageSquare, Phone, Mic } from "lucide-react";
 
 // Mock data for active rooms
 const mockRooms = [
   { id: "r1", name: "Gaming Squad", members: 5, isPrivate: true },
   { id: "r2", name: "Music Lovers", members: 3, isPrivate: false },
   { id: "r3", name: "Meme Review", members: 8, isPrivate: false },
+];
+
+// Simple mock for effects/clones -- could later link to user's real library
+const allVoices = [
+  { id: "1", name: "Robot", icon: <Mic className="h-4 w-4 inline mr-1" />, type: "effect" },
+  { id: "2", name: "Chipmunk", icon: <Mic className="h-4 w-4 inline mr-1" />, type: "effect" },
+  { id: "3", name: "Deep Voice", icon: <Mic className="h-4 w-4 inline mr-1" />, type: "effect" },
+  { id: "4", name: "My Voice Clone", icon: <Mic className="h-4 w-4 inline mr-1" />, type: "clone" },
 ];
 
 export default function NoiseRoom() {
@@ -31,7 +38,8 @@ export default function NoiseRoom() {
   const [roomName, setRoomName] = useState("");
   const [roomPassword, setRoomPassword] = useState("");
   const [roomCode, setRoomCode] = useState("");
-  
+  const [selectedVoiceId, setSelectedVoiceId] = useState("1");
+
   const handleCreateRoom = () => {
     setCreateDialogOpen(false);
     const newRoomId = "r" + (Math.floor(Math.random() * 1000) + 1).toString();
@@ -52,7 +60,6 @@ export default function NoiseRoom() {
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Noise Room</h1>
       </header>
-      
       <AnimatePresence>
         {!roomJoined ? (
           <motion.div
@@ -77,7 +84,6 @@ export default function NoiseRoom() {
                 <span>Join Room</span>
               </Button>
             </div>
-            
             <h2 className="text-lg font-semibold mb-4">Active Rooms</h2>
             <div className="space-y-4">
               {mockRooms.map(room => (
@@ -128,7 +134,6 @@ export default function NoiseRoom() {
                   <p className="text-sm text-muted-foreground">
                     Room Code: <span className="font-mono">XYZ-123-ABC</span>
                   </p>
-                  
                   <div className="grid grid-cols-3 gap-4">
                     <ActiveMember name="You" isMuted={false} isSpeaking={true} />
                     <ActiveMember name="Alex" isMuted={false} isSpeaking={false} />
@@ -161,13 +166,30 @@ export default function NoiseRoom() {
                   <CardContent className="p-6 text-center">
                     <div className="space-y-4">
                       <p>You are connected to voice chat</p>
-                      <div className="flex justify-center gap-2">
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <Button>
                           Toggle Mute
                         </Button>
                         <Button variant="secondary">
                           Change Voice
                         </Button>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">Voice:</span>
+                          <select 
+                            className="bg-background border rounded px-2 py-1 text-sm"
+                            value={selectedVoiceId}
+                            onChange={e => setSelectedVoiceId(e.target.value)}
+                          >
+                            {allVoices.map(v => (
+                              <option key={v.id} value={v.id}>
+                                {v.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Your selected voice effect will apply to chat!
                       </div>
                     </div>
                   </CardContent>
@@ -220,7 +242,6 @@ export default function NoiseRoom() {
         )}
       </AnimatePresence>
       
-      {/* Create Room Dialog */}
       <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -261,7 +282,6 @@ export default function NoiseRoom() {
         </DialogContent>
       </Dialog>
       
-      {/* Join Room Dialog */}
       <Dialog open={joinDialogOpen} onOpenChange={setJoinDialogOpen}>
         <DialogContent>
           <DialogHeader>

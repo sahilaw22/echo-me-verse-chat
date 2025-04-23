@@ -21,7 +21,13 @@ import {
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { Mic, Upload, Play, Pause, Square, Trash2, Save } from "lucide-react";
+import { Mic, Upload, Play, Pause, Square, Trash2, Save, Library } from "lucide-react";
+
+type VoiceCloneType = { id: string; name: string; duration: number; };
+
+function generateId() {
+  return Math.random().toString(36).substr(2, 9);
+}
 
 export default function VoiceClone() {
   const [activeTab, setActiveTab] = useState("record");
@@ -31,7 +37,9 @@ export default function VoiceClone() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [voiceName, setVoiceName] = useState("");
-  
+  // --- NEW: saved voices state ---
+  const [savedVoices, setSavedVoices] = useState<VoiceCloneType[]>([]);
+
   const startRecording = () => {
     setIsRecording(true);
     setRecordingTime(0);
@@ -62,23 +70,52 @@ export default function VoiceClone() {
   const handleSaveVoice = () => {
     setSaveDialogOpen(false);
     if (recordedAudio) {
-      setRecordedAudio({ ...recordedAudio, name: voiceName || "My Voice Clone" });
+      // Add new voice clone to the list (append)
+      setSavedVoices((prev) => [
+        ...prev, 
+        {
+          id: generateId(),
+          name: voiceName || "My Voice Clone",
+          duration: recordedAudio.duration
+        }
+      ]);
+      setVoiceName("");
+      setRecordedAudio(null); // Reset main view for next recording
+      setRecordingTime(0);
     }
   };
-  
+
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
-  
+
   const handleDelete = () => {
     setRecordedAudio(null);
     setRecordingTime(0);
   };
 
+  // -- REMOVE clone from list --
+  const removeSavedVoice = (id: string) => {
+    setSavedVoices(voices => voices.filter(voice => voice.id !== id));
+  };
+
+  // -- EDIT name (simple) --
+  const editSavedVoice = (id: string, newName: string) => {
+    setSavedVoices(voices =>
+      voices.map(voice => (voice.id === id ? { ...voice, name: newName } : voice))
+    );
+  };
+
   return (
-    <div className="flex flex-col min-h-screen p-4 pb-20">
+    <div className="flex flex-col min-h-screen p-4 pb-24">
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Voice Cloning</h1>
+        <Button variant="ghost" asChild>
+          <a href="/library" title="Go to Library">
+            <Library className="w-6 h-6 mr-2" />
+            Library
+          </a>
+        </Button>
       </header>
       
       <Tabs defaultValue="record" className="mb-6" onValueChange={setActiveTab}>
@@ -236,6 +273,57 @@ export default function VoiceClone() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* List of saved voices */}
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <Library className="h-5 w-5" />
+          Saved Voices
+        </h2>
+        {savedVoices.length === 0 ? (
+          <div className="text-muted-foreground text-sm mb-4">
+            No voices saved yet. Record and save your first clone!
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {savedVoices.map((voice) => (
+              <Card key={voice.id} className="flex items-center justify-between px-4 py-2">
+                <div className="flex items-center flex-1">
+                  <div className="rounded-full w-10 h-10 bg-primary text-white flex items-center justify-center mr-3">
+                    <Mic className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="font-medium">{voice.name}</div>
+                    <div className="text-xs text-muted-foreground">{voice.duration}s</div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {/* Play/Stop (simulate) */}
+                  <Button variant="outline" size="icon" onClick={() => {}}>
+                    <Play className="h-4 w-4" />
+                  </Button>
+                  {/* Edit Name */}
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                      const name = prompt("Rename voice", voice.name);
+                      if (name) editSavedVoice(voice.id, name);
+                    }}
+                    title="Rename"
+                  >
+                    <Save className="h-4 w-4" />
+                  </Button>
+                  {/* Delete */}
+                  <Button variant="destructive" size="icon" onClick={() => removeSavedVoice(voice.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

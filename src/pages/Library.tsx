@@ -54,35 +54,25 @@ export default function Library() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen p-4 pb-20 bg-gradient-to-br from-[#FEF7CD] via-[#FEC6A1] to-[#F97316]">
+    <div className="flex flex-col min-h-screen p-4 pb-20">
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-orange-600 drop-shadow-md">My Library</h1>
+        <h1 className="text-2xl font-bold">My Library</h1>
       </header>
       
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-500 h-4 w-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
           placeholder="Search voices..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-9 bg-white/70 border-yellow-300 focus:border-orange-400 focus:ring-orange-300 transition"
+          className="pl-9"
         />
       </div>
       
       <Tabs defaultValue="effects" className="mb-6" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-yellow-100 to-orange-100 border border-orange-200 rounded-lg shadow-sm">
-          <TabsTrigger 
-            value="effects" 
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-300 data-[state=active]:to-orange-300 data-[state=active]:text-orange-900"
-          >
-            Voice Effects
-          </TabsTrigger>
-          <TabsTrigger 
-            value="clones" 
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-300 data-[state=active]:to-orange-300 data-[state=active]:text-orange-900"
-          >
-            Cloned Voices
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="effects">Voice Effects</TabsTrigger>
+          <TabsTrigger value="clones">Cloned Voices</TabsTrigger>
         </TabsList>
         
         <TabsContent value="effects" className="mt-4">
@@ -90,10 +80,7 @@ export default function Library() {
             {filteredData.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No voice effects found</p>
-                <Button 
-                  asChild 
-                  className="mt-4 bg-orange-400 hover:bg-orange-500 text-white shadow"
-                >
+                <Button asChild className="mt-4">
                   <a href="/voice-effects">Explore Voice Effects</a>
                 </Button>
               </div>
@@ -115,10 +102,7 @@ export default function Library() {
             {filteredData.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No cloned voices found</p>
-                <Button 
-                  asChild 
-                  className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-orange-900 shadow"
-                >
+                <Button asChild className="mt-4">
                   <a href="/voice-clone">Create Voice Clone</a>
                 </Button>
               </div>
@@ -140,31 +124,17 @@ export default function Library() {
 }
 
 function VoiceCard({ voice, isPlaying, onPlay }) {
-  // Assign a color based on type for accent: effects=yellow, clones=orange
-  const accent =
-    voice.type === "effect"
-      ? "bg-gradient-to-r from-yellow-100 to-yellow-300"
-      : "bg-gradient-to-r from-orange-100 to-orange-300";
-
-  const accentText =
-    voice.type === "effect" ? "text-yellow-900" : "text-orange-900";
-
-  const playBtn =
-    voice.type === "effect"
-      ? "bg-yellow-200 hover:bg-yellow-300 text-yellow-900"
-      : "bg-orange-200 hover:bg-orange-300 text-orange-900";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <Card className={`${accent} border-0 shadow-sm`}>
+      <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <h3 className={`font-medium ${accentText}`}>{voice.name}</h3>
+              <h3 className="font-medium">{voice.name}</h3>
               <p className="text-xs text-muted-foreground">
                 Used {voice.usageCount} times
               </p>
@@ -175,7 +145,7 @@ function VoiceCard({ voice, isPlaying, onPlay }) {
                 variant="ghost"
                 size="icon"
                 onClick={onPlay}
-                className={`h-8 w-8 ${playBtn} transition`}
+                className="h-8 w-8"
               >
                 {isPlaying ? (
                   <Pause className="h-4 w-4" />
@@ -186,21 +156,21 @@ function VoiceCard({ voice, isPlaying, onPlay }) {
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-orange-400 hover:bg-orange-50">
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
-                    <Edit className="h-4 w-4 mr-2 text-yellow-400" />
+                    <Edit className="h-4 w-4 mr-2" />
                     Rename
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Share2 className="h-4 w-4 mr-2 text-orange-400" />
+                    <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Download className="h-4 w-4 mr-2 text-yellow-500" />
+                    <Download className="h-4 w-4 mr-2" />
                     Download
                   </DropdownMenuItem>
                   <DropdownMenuItem className="text-destructive">
