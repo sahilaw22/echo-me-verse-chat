@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoFull } from "@/assets/logo";
 
-// Splash screen with new logo, animated light gradients, and glowing text
 interface SplashScreenProps {
   onComplete: () => void;
 }
@@ -14,89 +13,80 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 700); // Allow exit animation
-    }, 2700);
+      setTimeout(onComplete, 550);
+    }, 2400);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
+  const dots = Array.from({ length: 16 });
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 flex flex-col items-center justify-center z-50 overflow-hidden bg-gradient-to-br from-[#fffdeb] via-[#fff8ee] to-[#e2f7ff]"
-          initial={{ opacity: 0 }}
+          className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-bl from-black via-[#251a00] to-[#2f1700] z-50 overflow-hidden"
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.46 }}
+          transition={{ duration: 0.6 }}
         >
-          {/* Animated Glow Gradients */}
+          {/* Floating gradient dots */}
+          <div className="absolute inset-0 pointer-events-none">
+            {dots.map((_, i) => (
+              <motion.div
+                key={"dot" + i}
+                className="absolute rounded-full"
+                style={{
+                  width: 44 - (i % 3) * 18,
+                  height: 44 - (i % 3) * 18,
+                  left: `${6 + (i % 4) * 22}%`,
+                  top: `${4 + Math.floor(i / 4) * 25}%`,
+                  background: "linear-gradient(135deg,#FF9900,#FFD700,#FF6600)",
+                  filter: "blur(3px)",
+                  opacity: 0.32 + (i % 3) * 0.15
+                }}
+                animate={{
+                  y: [0, -14 + (i % 3) * 8, 0],
+                  opacity: [0.2, 0.5, 0.25 + 0.08 * (i % 3)],
+                }}
+                transition={{
+                  duration: 2 + (i % 2) * 1.2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  delay: i * 0.08
+                }}
+              />
+            ))}
+          </div>
+          {/* Big logo with sliding in animation - Fixed with only two keyframes for spring animation */}
           <motion.div
-            className="absolute w-[530px] h-[530px] rounded-full bg-gradient-to-br from-[#a4edff]/40 via-[#fffbe9] to-[#fbe0be]/60 blur-3xl"
-            initial={{ scale: 0.96, opacity: 0.42 }}
-            animate={{
-              scale: [0.96, 1.08, 0.96],
-              opacity: [0.42, 0.58, 0.42],
-            }}
+            className="relative z-10 mb-8"
+            initial={{ scale: 0.8, opacity: 0, y: 45 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 6,
-            }}
-          />
-          <motion.div
-            className="absolute w-[320px] h-[260px] left-[55%] top-[20%] rounded-full bg-gradient-to-tr from-[#ffc8a8]/50 via-[#ffe29f]/60 to-[#e0fffa]/60 blur-2xl"
-            animate={{
-              rotate: [0, 15, 0],
-              opacity: [0.12, 0.29, 0.12],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 5,
-              repeatType: "mirror"
-            }}
-          />
-          {/* Shimmer spark */}
-          <motion.div
-            className="absolute bottom-[25%] left-[35%] w-24 h-24 rounded-full bg-gradient-to-tr from-[#fffde3]/60 to-[#ffc8a8]/30 blur-2xl"
-            animate={{
-              x: [0, 32, 0],
-              y: [0, -14, 0],
-              opacity: [0.18, 0.38, 0.18]
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3.5,
-              repeatType: "mirror"
-            }}
-          />
-          {/* Animated Logo */}
-          <motion.div
-            className="relative z-10"
-            animate={{
-              scale: [0.98, 1.09, 0.98]
-            }}
-            transition={{
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 2.8,
-              ease: "easeInOut"
+              duration: 1.12,
+              type: "spring",
+              stiffness: 64,
+              damping: 10,
+              delay: 0.25
             }}
           >
-            <LogoFull animated size="lg" vertical />
+            <LogoFull size="xl" vertical animated />
           </motion.div>
-          {/* Colorful animated brand text */}
+          {/* App tagline – with animated orange/yellow gradient text */}
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0.12, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.66, duration: 0.7 }}
-            className="relative z-10 mt-6 mb-1 text-center select-none"
+            transition={{ delay: 1.04, duration: 0.75 }}
+            className="relative z-10 text-xl font-semibold select-none"
+            style={{
+              background: "linear-gradient(90deg,#FF9900,#FFD700,#FF6600)",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              letterSpacing: "0.02em",
+              textShadow: "0 2px 18px #ff990044"
+            }}
           >
-            <h1 className="font-extrabold text-3xl md:text-4xl tracking-tight bg-gradient-to-r from-[#A4EDFF] via-[#FFC8A8] to-[#F6E6FF] bg-clip-text text-transparent drop-shadow-lg">
-              Welcome to <span className="font-black">EchoVerse</span>
-            </h1>
-            <p className="mt-2 text-[1.08rem] text-[#b09478] font-medium sm:text-lg italic opacity-80 drop-shadow">
-              Voice. Connect. Play.<span className="ml-1 animate-pulse text-[#A4EDFF]">🎙️</span>
-            </p>
+            Free Your Voice, Have Fun Everywhere
           </motion.div>
         </motion.div>
       )}

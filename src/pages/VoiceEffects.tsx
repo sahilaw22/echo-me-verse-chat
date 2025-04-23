@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Play, Pause, Download, Check } from "lucide-react";
 
-// Mock data for voice effects
 const mockVoiceEffects = [
   {
     id: "1",
@@ -135,9 +133,15 @@ export default function VoiceEffects() {
   const filteredEffects = getFilteredEffects();
 
   return (
-    <div className="flex flex-col min-h-screen p-4 pb-20">
+    <div className="flex flex-col min-h-screen p-4 pb-20 bg-gradient-to-bl from-[#f7f7fc] via-[#eaf8fd] to-[#ffe7fa]">
       <header className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Voice Effects</h1>
+        <h1 className="text-2xl font-extrabold"
+          style={{
+            background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
+            WebkitBackgroundClip: "text",
+            color: "transparent"
+          }}
+        >Voice Effects</h1>
       </header>
       
       <div className="relative mb-4">
@@ -146,12 +150,12 @@ export default function VoiceEffects() {
           placeholder="Search voice effects..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-9"
+          className="pl-9 bg-white/80 shadow-sm rounded-full text-base"
         />
       </div>
       
       <Tabs defaultValue="all" className="mb-6" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-5 bg-white/70 rounded-full shadow-sm">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="character">Character</TabsTrigger>
           <TabsTrigger value="creator">Creator</TabsTrigger>
@@ -187,65 +191,69 @@ function EffectCard({ effect, isPlaying, isApplied, onPlay, onApply }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.25 }}
+      className="hover:scale-[1.025] transition-transform"
     >
-      <Card className={isApplied ? "border-primary" : ""}>
+      <Card 
+        className={`${isApplied ? "border-primary" : "border-transparent border"} shadow-md hover:shadow-xl transition-all bg-white/90`}
+        style={{ borderRadius: "1rem" }}
+      >
         <CardContent className="p-3">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-medium">{effect.name}</h3>
+                <h3 className="font-medium text-base"
+                  style={{
+                    background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent"
+                  }}
+                >{effect.name}</h3>
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-muted-foreground">
                     {effect.downloads.toLocaleString()} downloads
                   </span>
                 </div>
               </div>
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs bg-[#edeaff]/50 text-gray-600">
                 {effect.category}
               </Badge>
             </div>
-            
             <div className="flex gap-2 mt-2">
               <Button
                 variant="secondary"
                 size="sm"
-                className="flex-1 h-8"
+                className="flex-1 h-8 rounded-full"
                 onClick={onPlay}
               >
                 {isPlaying ? (
                   <>
-                    <Pause className="h-3 w-3 mr-1" /> 
-                    Stop
+                    <Pause className="h-3 w-3 mr-1" /> Stop
                   </>
                 ) : (
                   <>
-                    <Play className="h-3 w-3 mr-1" /> 
-                    Preview
+                    <Play className="h-3 w-3 mr-1" /> Preview
                   </>
                 )}
               </Button>
-              
               <Button
                 variant={isApplied ? "default" : "outline"}
                 size="sm"
-                className="flex-1 h-8"
+                className="flex-1 h-8 rounded-full"
                 onClick={onApply}
               >
                 {isApplied ? (
                   <>
-                    <Check className="h-3 w-3 mr-1" /> 
-                    Applied
+                    <Check className="h-3 w-3 mr-1" /> Applied
                   </>
                 ) : (
                   'Apply'
                 )}
               </Button>
-              
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 rounded-full"
               >
                 <Download className="h-4 w-4" />
               </Button>
