@@ -13,118 +13,84 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 500); // Give time for exit animation
-    }, 3000);
+      setTimeout(onComplete, 550); // Exit animation longer for smoother
+    }, 2400);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
+  // Fun dots background
+  const dots = Array.from({ length: 16 });
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 overflow-hidden"
-          initial={{ opacity: 0 }}
+          className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-bl from-[#eeebfa] via-[#e6faff] to-[#ffe7fa] z-50 overflow-hidden"
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
-          {/* Animated background elements */}
-          <motion.div 
-            className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 blur-3xl"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{ 
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 4,
-            }}
-          />
-          
-          {/* Particles animation */}
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 20 }).map((_, i) => (
+          {/* Floating gradient dots */}
+          <div className="absolute inset-0 pointer-events-none">
+            {dots.map((_, i) => (
               <motion.div
-                key={i}
-                className="absolute rounded-full bg-primary/30"
-                style={{ 
-                  width: Math.random() * 6 + 2,
-                  height: Math.random() * 6 + 2,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
+                key={"dot" + i}
+                className="absolute rounded-full"
+                style={{
+                  width: 44 - (i % 3) * 18,
+                  height: 44 - (i % 3) * 18,
+                  left: `${6 + (i % 4) * 22}%`,
+                  top: `${4 + Math.floor(i / 4) * 25}%`,
+                  background: "linear-gradient(135deg,#B993FE44,#FFD6F966,#82D1F833)",
+                  filter: "blur(3px)",
+                  opacity: 0.32 + (i % 3) * 0.15
                 }}
                 animate={{
-                  y: [0, -100],
-                  opacity: [0, 1, 0],
+                  y: [0, -14 + (i % 3) * 8, 0],
+                  opacity: [0.2, 0.5, 0.25 + 0.08 * (i % 3)],
                 }}
                 transition={{
-                  duration: Math.random() * 3 + 2,
+                  duration: 2 + (i % 2) * 1.2,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <motion.div
-                key={i + 20}
-                className="absolute rounded-full bg-secondary/30"
-                style={{ 
-                  width: Math.random() * 6 + 2,
-                  height: Math.random() * 6 + 2,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -100],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: Math.random() * 3 + 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
+                  repeatType: "reverse",
+                  delay: i * 0.08
                 }}
               />
             ))}
           </div>
-
+          {/* Big logo with sliding in animation */}
           <motion.div
-            className="relative z-10"
-            animate={{ 
-              scale: [0.95, 1.05, 0.95],
-            }}
-            transition={{ 
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 3,
+            className="relative z-10 mb-8"
+            initial={{ scale: 0.8, opacity: 0, y: 45 }}
+            animate={{ scale: [0.8, 1.07, 1], opacity: 1, y: [45, 2, 0] }}
+            transition={{
+              duration: 1.12,
+              type: "spring",
+              stiffness: 64,
+              damping: 10,
+              delay: 0.25
             }}
           >
-            <LogoFull vertical className="mb-8" />
+            <LogoFull size="xl" vertical animated />
           </motion.div>
-          
+          {/* App tagline – with animated pastel gradient text */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0.12, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="relative z-10 text-lg text-white/80 mt-4"
-            style={{ textShadow: "0 0 10px rgba(255, 194, 7, 0.5)" }}
+            transition={{ delay: 1.04, duration: 0.75 }}
+            className="relative z-10 text-xl font-semibold select-none"
+            style={{
+              background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              letterSpacing: "0.02em",
+              textShadow: "0 2px 18px #b993fe44"
+            }}
           >
-            I'm you &amp; you're me
-          </motion.div>
-          
-          <motion.div 
-            className="absolute top-16 w-36 h-1 bg-gradient-to-r from-primary to-secondary rounded-full overflow-hidden"
-          >
-            <motion.div 
-              className="h-full bg-white/50"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-            />
+            Free Your Voice, Have Fun Everywhere
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
-
