@@ -13,17 +13,18 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 550);
+      setTimeout(onComplete, 550); // Exit animation longer for smoother
     }, 2400);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
+  // Fun dots background
   const dots = Array.from({ length: 16 });
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-bl from-black via-[#251a00] to-[#2f1700] z-50 overflow-hidden"
+          className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-bl from-[#eeebfa] via-[#e6faff] to-[#ffe7fa] z-50 overflow-hidden"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -40,7 +41,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                   height: 44 - (i % 3) * 18,
                   left: `${6 + (i % 4) * 22}%`,
                   top: `${4 + Math.floor(i / 4) * 25}%`,
-                  background: "linear-gradient(135deg,#FF9900,#FFD700,#FF6600)",
+                  background: "linear-gradient(135deg,#B993FE44,#FFD6F966,#82D1F833)",
                   filter: "blur(3px)",
                   opacity: 0.32 + (i % 3) * 0.15
                 }}
@@ -57,11 +58,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               />
             ))}
           </div>
-          {/* Big logo with sliding in animation - Fixed with only two keyframes for spring animation */}
+          {/* Big logo with sliding in animation */}
           <motion.div
             className="relative z-10 mb-8"
             initial={{ scale: 0.8, opacity: 0, y: 45 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
+            animate={{ scale: [0.8, 1.07, 1], opacity: 1, y: [45, 2, 0] }}
             transition={{
               duration: 1.12,
               type: "spring",
@@ -72,18 +73,18 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           >
             <LogoFull size="xl" vertical animated />
           </motion.div>
-          {/* App tagline – with animated orange/yellow gradient text */}
+          {/* App tagline – with animated pastel gradient text */}
           <motion.div
             initial={{ opacity: 0.12, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.04, duration: 0.75 }}
             className="relative z-10 text-xl font-semibold select-none"
             style={{
-              background: "linear-gradient(90deg,#FF9900,#FFD700,#FF6600)",
+              background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
               WebkitBackgroundClip: "text",
               color: "transparent",
               letterSpacing: "0.02em",
-              textShadow: "0 2px 18px #ff990044"
+              textShadow: "0 2px 18px #b993fe44"
             }}
           >
             Free Your Voice, Have Fun Everywhere
