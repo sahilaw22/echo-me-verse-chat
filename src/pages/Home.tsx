@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { LogoFull } from "@/assets/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mic, Headphones, Volume, Share2, User } from "lucide-react";
+import { Mic, Headphones, Volume, Share2, User, Library } from "lucide-react";
 
 export default function Home() {
   const [greeting, setGreeting] = useState("Welcome");
@@ -23,6 +23,14 @@ export default function Home() {
   }, []);
 
   const features = [
+    // --- Add LIBRARY button at the top ---
+    {
+      title: "Library",
+      description: "View your saved voices & effects",
+      icon: Library,
+      link: "/library",
+      color: "bg-amber-600",
+    },
     {
       title: "Voice Effects",
       description: "Explore and use voice effects",
@@ -83,7 +91,7 @@ export default function Home() {
             key={feature.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.09 }}
           >
             <Link to={feature.link}>
               <Card className="h-full hover:shadow-md transition-all">
