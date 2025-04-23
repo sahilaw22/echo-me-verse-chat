@@ -2,127 +2,138 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-/** New branded logo: Modern waveform + speech bubble, fits all sizes, gradient text */
-export function AppWaveLogo({ size = 56 }: { size?: number }) {
-  // SVG: a rounded rectangle as speech bubble, then a waveform path (fun and friendly!)
+/** Microphone+wave logo SVG, fits all sizes, orange/yellow gradient for EchoMe feel */
+function EchoMeMicSVG({ size = 48 }: { size?: number }) {
   return (
-    <svg 
-      width={size} height={size} viewBox="0 0 56 56" fill="none"
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
       aria-hidden="true"
-      className="drop-shadow-[0_2px_8px_rgba(163,109,241,0.08)]"
     >
       <defs>
-        <linearGradient id="bubble-grad" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#B993FE" />
-          <stop offset="1" stopColor="#FFE7FA" />
-        </linearGradient>
-        <linearGradient id="wave-grad" x1="0" y1="28" x2="56" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#82D1F8" />
-          <stop offset="0.6" stopColor="#A06DF2" />
-          <stop offset="1" stopColor="#FFD6F9" />
+        <radialGradient id="em-mic-grad" cx="65%" cy="25%" r="95%">
+          <stop offset="0%" stopColor="#FFC107" />
+          <stop offset="70%" stopColor="#FF9100" />
+          <stop offset="100%" stopColor="#E65100" />
+        </radialGradient>
+        <linearGradient id="em-wave-grad" x1="0" y1="0" x2="48" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#26A69A" />
+          <stop offset="0.55" stopColor="#FF9100"/>
+          <stop offset="1" stopColor="#FFC107" />
         </linearGradient>
       </defs>
-      {/* Speech bubble */}
-      <rect x="5" y="7" width="46" height="37" rx="14" fill="url(#bubble-grad)" />
-      {/* Waveform */}
-      <path 
-        d="M 14 32 Q 18 18 22 28 Q 26 40 30 28 Q 34 15 38 30 Q 42 42 46 18"
-        stroke="url(#wave-grad)" strokeWidth="3.4" fill="none" strokeLinecap="round"
-      />
-      {/* Bubble tail */}
-      <ellipse cx="28" cy="49" rx="8" ry="4" fill="#F7E4FA" opacity="0.7"/>
+      {/* Mic body */}
+      <rect x="18" y="12" width="12" height="20" rx="6" fill="url(#em-mic-grad)"/>
+      {/* Mic grill */}
+      <ellipse cx="24" cy="15" rx="6" ry="3.5" fill="white" fillOpacity="0.7"/>
+      {/* Lower stem */}
+      <rect x="22" y="32" width="4" height="7" rx="2" fill="#FFC107"/>
+      {/* Stand */}
+      <rect x="17" y="40" width="14" height="3" rx="1.5" fill="#26A69A"/>
+      {/* Sound waves (left/right) */}
+      <path d="M11 23c0-5.6 3-10.6 7.5-12.5" stroke="url(#em-wave-grad)" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M37 23c0-5.5-3-10.5-7.5-12.5" stroke="url(#em-wave-grad)" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Decorative tiny dot for playful detail */}
+      <circle cx="37" cy="11" r="1.2" fill="#FFC107" opacity={0.65}/>
     </svg>
   );
 }
 
+
 export function Logo({
-  className, size = "md", animated = false,
+  className,
+  size = "md",
+  animated = false,
 }: {
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
   animated?: boolean;
 }) {
-  const pxSize = { sm: 36, md: 56, lg: 92, xl: 144 }[size] ?? 56;
+  const pxSize = { sm: 32, md: 48, lg: 80, xl: 128 }[size] ?? 48;
   const sizes = {
-    sm: "h-9 w-9", md: "h-14 w-14",
-    lg: "h-24 w-24", xl: "h-36 w-36",
+    sm: "h-8 w-8",
+    md: "h-12 w-12",
+    lg: "h-20 w-20",
+    xl: "h-32 w-32",
   };
-  const LogoIcon = (
+
+  const LogoComponent = () => (
     <div className={cn("relative flex items-center justify-center", sizes[size], className)}>
-      <AppWaveLogo size={pxSize} />
-      <span
-        className="absolute left-1/2 -translate-x-1/2 bottom-0.5 font-black select-none text-transparent bg-clip-text"
-        style={{
-          background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
-          fontSize:
-            size === "xl" ? "2.2rem"
-              : size === "lg" ? "1.38rem"
-              : size === "md" ? "0.98rem"
-              : "0.77rem",
-          WebkitBackgroundClip: "text",
-          letterSpacing: "0.04em",
-          textShadow: "0 2px 10px #a06df24c"
-        }}
-      >
-        echo.me
-      </span>
+      {/* Logo base circle background */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-br from-primary via-secondary to-[#FF9100] rounded-full opacity-85"></div>
+      <div className="absolute inset-[2px] z-20 bg-black rounded-full"></div>
+      {/* The new logo: microphone graphic + letters */}
+      <div className="absolute inset-0 z-30 flex flex-col items-center justify-center">
+        <EchoMeMicSVG size={pxSize * 0.78} />
+        {/* "EM" letters, below the mic for brand ID */}
+        <span
+          className="font-extrabold tracking-widest text-white select-none mt-1"
+          style={{
+            fontSize:
+              size === "xl"
+                ? "1.45rem"
+                : size === "lg"
+                  ? "1.15rem"
+                  : size === "md"
+                    ? "0.93rem"
+                    : "0.75rem",
+            textShadow: "0 1px 4px #E65100aa"
+          }}
+        >
+          EM
+        </span>
+      </div>
     </div>
   );
+
   if (animated) {
     return (
       <motion.div
-        initial={{ scale: 0.82, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 94 }}
-      >{LogoIcon}</motion.div>
+        transition={{ type: "spring", stiffness: 100 }}
+      >
+        <LogoComponent />
+      </motion.div>
     );
   }
-  return LogoIcon;
+
+  return <LogoComponent />;
 }
 
 export function LogoFull({
-  className, vertical = false, animated = false, size = "md"
+  className,
+  vertical = false,
+  animated = false,
+  size = "md",
 }: {
   className?: string;
   vertical?: boolean;
   animated?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
 }) {
-  const Text = (
-    <span
-      className="font-black tracking-tight text-transparent bg-clip-text"
-      style={{
-        background: "linear-gradient(89deg,#B993FE,#82D1F8,#FFD6F9)",
-        fontSize: size === "xl" ? "2.8rem"
-            : size === "lg" ? "2rem"
-            : size === "md" ? "1.33rem"
-            : "0.98rem",
-        WebkitBackgroundClip: "text",
-        letterSpacing: "-0.02em",
-        lineHeight: "1.15",
-        textShadow: "0 2px 18px #a06df215"
-      }}
-    >
-      EchoMe
-    </span>
-  );
-  const inner = vertical
-    ? <div className={cn("flex flex-col items-center gap-2", className)}>
-        <Logo size={size} />
-        {Text}
+  const Component = () => (
+    <div className={cn("flex items-center", vertical ? "flex-col gap-2" : "gap-3", className)}>
+      <Logo size={size} />
+      <div className="font-extrabold text-2xl bg-gradient-to-r from-primary via-[#FF9100] to-secondary bg-clip-text text-transparent tracking-tight drop-shadow-md">
+        EchoMe
       </div>
-    : <div className={cn("flex items-center gap-2", className)}>
-        <Logo size={size} />
-        {Text}
-      </div>;
+    </div>
+  );
+
   if (animated) {
     return (
       <motion.div
-        initial={{ scale: 0.7, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 83 }}
-      >{inner}</motion.div>
+        transition={{ type: "spring", stiffness: 100 }}
+      >
+        <Component />
+      </motion.div>
     );
   }
-  return inner;
+
+  return <Component />;
 }
