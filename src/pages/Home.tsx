@@ -1,17 +1,19 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { LogoFull } from "@/assets/logo";
-import { AvatarMenu } from "@/components/ui/avatar-menu";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mic, Headphones, Volume, Share2 } from "lucide-react";
+import { Mic, Headphones, Volume, Share2, User } from "lucide-react";
 
 export default function Home() {
-  const { user } = useUser();
   const [greeting, setGreeting] = useState("Welcome");
+  const [user, setUser] = useState({
+    fullName: "Guest User",
+    firstName: "Guest",
+    imageUrl: null
+  });
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -55,7 +57,13 @@ export default function Home() {
     <div className="flex flex-col min-h-screen p-4 pb-20">
       <header className="flex justify-between items-center mb-6">
         <LogoFull />
-        {user && <AvatarMenu username={user.fullName || user.username || ""} imageUrl={user.imageUrl} />}
+        <Link to="/settings">
+          <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+            <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center">
+              <User className="h-5 w-5" />
+            </div>
+          </Button>
+        </Link>
       </header>
 
       <motion.div

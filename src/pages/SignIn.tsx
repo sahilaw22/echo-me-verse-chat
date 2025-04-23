@@ -1,14 +1,45 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SignIn as ClerkSignIn } from "@clerk/clerk-react";
 import { motion } from "framer-motion";
 import { LogoFull } from "@/assets/logo";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { toast } = useToast();
+
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Simple validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Mock successful login
+    toast({
+      title: "Success",
+      description: "Signed in successfully",
+    });
+    
+    // Navigate to home page
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-accent">
@@ -21,24 +52,46 @@ export default function SignIn() {
           >
             &larr; Back
           </Button>
-          <ClerkSignIn 
-            routing="path" 
-            path="/signin" 
-            signUpUrl="/signup" 
-            afterSignInUrl="/"
-            appearance={{
-              elements: {
-                rootBox: "w-full mx-auto",
-                card: "bg-card shadow-xl border border-border rounded-xl p-6",
-                headerTitle: "text-xl font-bold text-primary",
-                headerSubtitle: "text-muted-foreground",
-                formButtonPrimary: "bg-primary hover:bg-primary/90 text-white",
-                socialButtonsBlockButton: "border-border text-foreground hover:bg-accent",
-                footerActionText: "text-muted-foreground",
-                footerActionLink: "text-primary hover:text-primary/90",
-              }
-            }}
-          />
+          
+          <Card className="bg-card shadow-xl border border-border rounded-xl p-6">
+            <form onSubmit={handleSignIn} className="space-y-4">
+              <h1 className="text-xl font-bold text-primary">Sign in to EchoMe</h1>
+              <p className="text-muted-foreground">Enter your details to continue</p>
+              
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input 
+                  id="email"
+                  type="email" 
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password"
+                  type="password" 
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              
+              <Button type="submit" className="w-full">Sign In</Button>
+              
+              <div className="text-center">
+                <p className="text-muted-foreground text-sm">
+                  Don't have an account? {" "}
+                  <Link to="/signup" className="text-primary hover:text-primary/90">
+                    Sign up
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </Card>
         </div>
       ) : (
         <motion.div 
