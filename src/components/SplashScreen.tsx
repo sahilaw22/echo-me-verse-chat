@@ -113,7 +113,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           </motion.div>
           
           <motion.div 
-            className="absolute bottom-16 w-36 h-1 bg-gradient-to-r from-primary to-secondary rounded-full overflow-hidden"
+            className="absolute top-16 w-36 h-1 bg-gradient-to-r from-primary to-secondary rounded-full overflow-hidden"
           >
             <motion.div 
               className="h-full bg-white/50"
@@ -127,3 +127,4 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     </AnimatePresence>
   );
 }
+
