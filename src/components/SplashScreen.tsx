@@ -62,7 +62,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           <motion.div
             className="relative z-10 mb-8"
             initial={{ scale: 0.8, opacity: 0, y: 45 }}
-            animate={{ scale: [0.8, 1.07, 1], opacity: 1, y: [45, 2, 0] }}
+            animate={{ 
+              scale: 1, 
+              opacity: 1, 
+              y: 0 
+            }}
             transition={{
               duration: 1.12,
               type: "spring",
