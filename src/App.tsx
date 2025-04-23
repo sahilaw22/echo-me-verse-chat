@@ -25,10 +25,11 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [showSplash, setShowSplash] = useState(false);
+  // Always show splash screen on initial app load
+  const [showSplash, setShowSplash] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // When user logs in, show the splash screen and set authenticated
+  // When user logs in, you may want to trigger splash again; adjust logic if needed
   const handleSuccessfulAuth = () => {
     setIsAuthenticated(true);
     setShowSplash(true);
