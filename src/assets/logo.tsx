@@ -49,14 +49,16 @@ export function LogoFull({
   className,
   vertical = false,
   animated = false,
+  size = "md",
 }: {
   className?: string;
   vertical?: boolean;
   animated?: boolean;
+  size?: "sm" | "md" | "lg" | "xl";
 }) {
   const Component = () => (
     <div className={cn("flex items-center", vertical ? "flex-col gap-2" : "gap-3", className)}>
-      <Logo />
+      <Logo size={size} />
       <div className={cn("font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent")}>
         EchoMe
       </div>

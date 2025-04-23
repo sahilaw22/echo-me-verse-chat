@@ -99,7 +99,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               duration: 3,
             }}
           >
-            <LogoFull vertical className="mb-8" size="xl" />
+            <LogoFull vertical className="mb-8" />
           </motion.div>
           
           <motion.div

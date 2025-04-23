@@ -38,9 +38,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
           <BrowserRouter>
+            <Toaster />
+            <Sonner />
             {showSplash ? (
               <SplashScreen onComplete={() => setShowSplash(false)} />
             ) : (
