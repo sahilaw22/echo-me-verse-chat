@@ -1,25 +1,23 @@
-
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-/** New branded logo: Modern waveform + speech bubble, fits all sizes, gradient text */
+/** New branded logo: Modern waveform + speech bubble, fits all sizes, orange/yellow gradient */
 export function AppWaveLogo({ size = 56 }: { size?: number }) {
-  // SVG: a rounded rectangle as speech bubble, then a waveform path (fun and friendly!)
   return (
     <svg 
       width={size} height={size} viewBox="0 0 56 56" fill="none"
       aria-hidden="true"
-      className="drop-shadow-[0_2px_8px_rgba(163,109,241,0.08)]"
+      className="drop-shadow-[0_2px_8px_rgba(255,153,0,0.2)]"
     >
       <defs>
         <linearGradient id="bubble-grad" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#B993FE" />
-          <stop offset="1" stopColor="#FFE7FA" />
+          <stop stopColor="#FF9900" />
+          <stop offset="1" stopColor="#FFD700" />
         </linearGradient>
         <linearGradient id="wave-grad" x1="0" y1="28" x2="56" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#82D1F8" />
-          <stop offset="0.6" stopColor="#A06DF2" />
-          <stop offset="1" stopColor="#FFD6F9" />
+          <stop stopColor="#FF6600" />
+          <stop offset="0.6" stopColor="#FF9900" />
+          <stop offset="1" stopColor="#FFD700" />
         </linearGradient>
       </defs>
       {/* Speech bubble */}
@@ -30,7 +28,7 @@ export function AppWaveLogo({ size = 56 }: { size?: number }) {
         stroke="url(#wave-grad)" strokeWidth="3.4" fill="none" strokeLinecap="round"
       />
       {/* Bubble tail */}
-      <ellipse cx="28" cy="49" rx="8" ry="4" fill="#F7E4FA" opacity="0.7"/>
+      <ellipse cx="28" cy="49" rx="8" ry="4" fill="#FF990033" opacity="0.7"/>
     </svg>
   );
 }
@@ -53,7 +51,7 @@ export function Logo({
       <span
         className="absolute left-1/2 -translate-x-1/2 bottom-0.5 font-black select-none text-transparent bg-clip-text"
         style={{
-          background: "linear-gradient(90deg,#B993FE,#82D1F8,#FFD6F9)",
+          background: "linear-gradient(90deg,#FF9900,#FF6600,#FFD700)",
           fontSize:
             size === "xl" ? "2.2rem"
               : size === "lg" ? "1.38rem"
@@ -92,7 +90,7 @@ export function LogoFull({
     <span
       className="font-black tracking-tight text-transparent bg-clip-text"
       style={{
-        background: "linear-gradient(89deg,#B993FE,#82D1F8,#FFD6F9)",
+        background: "linear-gradient(89deg,#FF9900,#FF6600,#FFD700)",
         fontSize: size === "xl" ? "2.8rem"
             : size === "lg" ? "2rem"
             : size === "md" ? "1.33rem"
