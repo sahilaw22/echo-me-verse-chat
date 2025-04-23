@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,11 +25,18 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // When user logs in, show the splash screen and set authenticated
+  const handleSuccessfulAuth = () => {
+    setIsAuthenticated(true);
+    setShowSplash(true);
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -38,6 +45,8 @@ const App = () => {
               <SplashScreen onComplete={() => setShowSplash(false)} />
             ) : (
               <Routes>
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
                 <Route element={<MobileLayout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/library" element={<Library />} />
@@ -47,8 +56,6 @@ const App = () => {
                   <Route path="/prank-room" element={<PrankRoom />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             )}

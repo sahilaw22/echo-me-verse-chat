@@ -15,7 +15,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "light",
+  theme: "dark",
   setTheme: () => null,
 };
 
@@ -23,7 +23,7 @@ const ThemeContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
+  defaultTheme = "dark",
   storageKey = "echome-ui-theme",
   ...props
 }: ThemeProviderProps) {
