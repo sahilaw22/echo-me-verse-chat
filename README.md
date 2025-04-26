@@ -1,73 +1,91 @@
-# Welcome to your Lovable project
+# ProjectCrazeX
 
-## Project info
+A feature-rich voice and audio entertainment platform built with React, TypeScript, and Vite.
 
-**URL**: https://lovable.dev/projects/5081ffa8-8a5d-4687-9c1a-0e2050f1fb9e
+## 🎯 Features
 
-## How can I edit this code?
+### Core Features
+- **Voice Effects Studio** - Transform and modify voice recordings with various effects
+- **Prank Room** - Create and share funny voice pranks
+- **Noise Room** - Generate and mix different ambient sounds
+- **Music Creation** - Create music using AI-assisted tools
+- **Lyrics Creator** - AI-powered lyrics generation tool
+- **Voice Cloning** - Clone and customize voice samples
+- **Prank Calling** - Safe and fun prank calling features
 
-There are several ways of editing your application.
+### Technical Features
+- 🎨 Modern UI with Tailwind CSS
+- 📱 Mobile-first responsive design
+- 🌓 Dark/Light theme support
+- 🔒 User authentication
+- 📚 Personal library management
+- 🎵 Audio wave visualization
+- 🔌 Offline support with "No Internet" screen
+- 🎛️ Advanced audio processing capabilities
 
-**Use Lovable**
+## 🛠️ Tech Stack
+- React + TypeScript
+- Vite for blazing-fast development
+- Tailwind CSS for styling
+- Shadcn UI components
+- Modern React practices with hooks and context
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5081ffa8-8a5d-4687-9c1a-0e2050f1fb9e) and start prompting.
+## 🚀 Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Clone the repository
+```bash
+git clone https://github.com/sahilaw22/ProjectCrazeX.git
+```
 
-**Use your preferred IDE**
+2. Install dependencies
+```bash
+npm install
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Run the development server
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📁 Project Structure
+```
+src/
+├── components/     # Reusable UI components
+├── contexts/       # React context providers
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions
+└── pages/         # Application pages and routes
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🔐 Authentication
+- Secure sign-up and sign-in functionality
+- Profile management
+- User settings and preferences
 
-**Use GitHub Codespaces**
+## 📱 Mobile Support
+- Responsive design for all screen sizes
+- Mobile-optimized layout
+- Touch-friendly interface
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 UI Components
+- Custom audio wave visualizer
+- Comprehensive UI component library
+- Modern and intuitive interface
+- Toast notifications
+- Modal dialogs
+- Navigation system
+- Form components
 
-## What technologies are used for this project?
+## 🌟 New Features
+- Advanced audio processing with AudioWaves component
+- Lyrics creation with AI assistance
+- Prank calling system
+- Profile customization
+- Voice effects library
+- Music creation studio
 
-This project is built with:
+## 📝 Credits
+Developed by [Sahil](https://github.com/sahilaw22)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/5081ffa8-8a5d-4687-9c1a-0e2050f1fb9e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📄 License
+Private Repository - All Rights Reserved

@@ -152,7 +152,7 @@ export default function Settings() {
                   EchoMe v1.0.0
                 </p>
                 <p className="text-sm">
-                  Created by Lovable Technologies
+                  Created by Sahil
                 </p>
                 <p className="text-sm mt-4 text-muted-foreground">
                   © 2025 EchoMe. All rights reserved.
