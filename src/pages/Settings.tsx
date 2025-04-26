@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -9,7 +8,6 @@ import {
   Card, 
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle 
 } from "@/components/ui/card";
@@ -20,8 +18,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Sun,
-  Moon,
   User,
   Settings as SettingsIcon,
   HelpCircle,
@@ -34,7 +30,7 @@ import {
 } from "lucide-react";
 
 export default function Settings() {
-  const { theme, setTheme } = useTheme();
+  useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [highQualityEnabled, setHighQualityEnabled] = useState(true);
   
@@ -48,37 +44,6 @@ export default function Settings() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sun className="h-4 w-4" />
-              <Moon className="h-4 w-4" />
-              Appearance
-            </CardTitle>
-            <CardDescription>Customize your app theme</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <Button
-                variant="outline"
-                className={`h-16 ${theme === "light" ? "border-primary" : ""}`}
-                onClick={() => setTheme("light")}
-              >
-                <Sun className="h-4 w-4 mr-2" />
-                Light Mode
-              </Button>
-              <Button
-                variant="outline"
-                className={`h-16 ${theme === "dark" ? "border-primary" : ""}`}
-                onClick={() => setTheme("dark")}
-              >
-                <Moon className="h-4 w-4 mr-2" />
-                Dark Mode
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
               <User className="h-4 w-4" />
               Account
             </CardTitle>
@@ -86,10 +51,7 @@ export default function Settings() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Button className="w-full" asChild>
-              <a href="/profile">Edit Profile</a>
-            </Button>
-            <Button variant="outline" className="w-full" asChild>
-              <a href="/profile/password">Change Password</a>
+              <Link to="/profile">Manage Profile</Link>
             </Button>
           </CardContent>
         </Card>

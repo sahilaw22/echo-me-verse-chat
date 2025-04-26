@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import animatePlugin from "tailwindcss-animate";
+import typographyPlugin from "@tailwindcss/typography";
 
 export default {
 	darkMode: ["class"],
@@ -70,27 +72,36 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'glow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.5' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glow': 'glow 4s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+			},
+			backdropBlur: {
+				'xl': '24px'
+			},
+			fontFamily: {
+				sans: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		animatePlugin,
+		typographyPlugin
+	],
 } satisfies Config;

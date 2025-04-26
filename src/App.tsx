@@ -1,38 +1,41 @@
-
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { SplashScreen } from "@/components/SplashScreen";
 import { MobileLayout } from "@/components/layouts/MobileLayout";
 
 // Pages
+import { SignIn } from "./pages/SignIn";
+import { SignUp } from "./pages/SignUp";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import Library from "./pages/Library";
 import VoiceEffects from "./pages/VoiceEffects";
 import VoiceClone from "./pages/VoiceClone";
 import NoiseRoom from "./pages/NoiseRoom";
-import PrankRoom from "./pages/PrankRoom";
+import PrankCalling from "./pages/PrankCalling";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import CreateMusic from "./pages/CreateMusic";
+import LyricsCreator from "./pages/LyricsCreator";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Always show splash screen on initial app load
   const [showSplash, setShowSplash] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // When user logs in, you may want to trigger splash again; adjust logic if needed
-  const handleSuccessfulAuth = () => {
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+  };
+
+  const handleSignInSuccess = () => {
     setIsAuthenticated(true);
-    setShowSplash(true);
   };
 
   return (
@@ -43,21 +46,62 @@ const App = () => {
             <Toaster />
             <Sonner />
             {showSplash ? (
-              <SplashScreen onComplete={() => setShowSplash(false)} />
+              <SplashScreen onComplete={handleSplashComplete} />
             ) : (
               <Routes>
-                <Route path="/signin" element={<SignIn />} />
+                {/* Auth Routes - Available when not authenticated */}
+                <Route path="/signin" element={<SignIn onSignInSuccess={handleSignInSuccess} />} />
                 <Route path="/signup" element={<SignUp />} />
+
+                {/* Protected Routes - Only available when authenticated */}
                 <Route element={<MobileLayout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/library" element={<Library />} />
-                  <Route path="/voice-effects" element={<VoiceEffects />} />
-                  <Route path="/voice-clone" element={<VoiceClone />} />
-                  <Route path="/noise-room" element={<NoiseRoom />} />
-                  <Route path="/prank-room" element={<PrankRoom />} />
-                  <Route path="/settings" element={<Settings />} />
+                  <Route
+                    path="/"
+                    element={isAuthenticated ? <Home /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/library"
+                    element={isAuthenticated ? <Library /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/voice-effects"
+                    element={isAuthenticated ? <VoiceEffects /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/voice-clone"
+                    element={isAuthenticated ? <VoiceClone /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/noise-room"
+                    element={isAuthenticated ? <NoiseRoom /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/prank-calling"
+                    element={isAuthenticated ? <PrankCalling /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/settings"
+                    element={isAuthenticated ? <Settings /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/profile"
+                    element={isAuthenticated ? <Profile /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/create-music"
+                    element={isAuthenticated ? <CreateMusic /> : <Navigate to="/signin" replace />}
+                  />
+                  <Route
+                    path="/lyrics-creator"
+                    element={isAuthenticated ? <LyricsCreator /> : <Navigate to="/signin" replace />}
+                  />
                 </Route>
-                <Route path="*" element={<NotFound />} />
+
+                {/* Default redirect to signin when not authenticated */}
+                <Route
+                  path="*"
+                  element={isAuthenticated ? <NotFound /> : <Navigate to="/signin" replace />}
+                />
               </Routes>
             )}
           </BrowserRouter>

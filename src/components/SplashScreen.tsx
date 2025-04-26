@@ -1,7 +1,6 @@
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogoFull } from "@/assets/logo";
+import { useNavigate } from "react-router-dom";
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -9,119 +8,96 @@ interface SplashScreenProps {
 
 export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const [bars] = useState(Array.from({ length: 12 }).map(() => Math.random() * 40 + 10));
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 500); // Give time for exit animation
-    }, 3000);
+      setTimeout(() => {
+        onComplete();
+        navigate('/signin');
+      }, 500);
+    }, 2000);
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [onComplete, navigate]);
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 overflow-hidden"
+          className="fixed inset-0 flex flex-col items-center justify-center bg-black z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Animated background elements */}
-          <motion.div 
-            className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 blur-3xl"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{ 
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 4,
-            }}
-          />
-          
-          {/* Particles animation */}
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 20 }).map((_, i) => (
+          {/* Audio Wave Animation */}
+          <div className="relative w-40 h-40 flex items-center justify-center mb-8">
+            <motion.div
+              className="absolute w-24 h-24 bg-gradient-to-br from-primary/80 to-secondary/80 rounded-full"
+              animate={{
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            
+            {/* Audio Bars */}
+            <div className="relative flex items-center justify-center gap-1">
+              {bars.map((height, index) => (
+                <motion.div
+                  key={index}
+                  className="w-1.5 bg-gradient-to-t from-primary to-secondary rounded-full"
+                  initial={{ height: 10, opacity: 0.3 }}
+                  animate={{
+                    height: [10, height, 10],
+                    opacity: [0.3, 1, 0.3],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    delay: index * 0.1,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Ripple Effects */}
+            {[1, 2, 3].map((_, index) => (
               <motion.div
-                key={i}
-                className="absolute rounded-full bg-primary/30"
-                style={{ 
-                  width: Math.random() * 6 + 2,
-                  height: Math.random() * 6 + 2,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
+                key={index}
+                className="absolute w-full h-full rounded-full border-2 border-primary/30"
+                initial={{ scale: 0.8, opacity: 0 }}
                 animate={{
-                  y: [0, -100],
-                  opacity: [0, 1, 0],
+                  scale: [0.8, 1.2],
+                  opacity: [0.5, 0],
                 }}
                 transition={{
-                  duration: Math.random() * 3 + 2,
+                  duration: 2,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <motion.div
-                key={i + 20}
-                className="absolute rounded-full bg-secondary/30"
-                style={{ 
-                  width: Math.random() * 6 + 2,
-                  height: Math.random() * 6 + 2,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -100],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: Math.random() * 3 + 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
+                  delay: index * 0.6,
+                  ease: "easeOut",
                 }}
               />
             ))}
           </div>
 
-          <motion.div
-            className="relative z-10"
-            animate={{ 
-              scale: [0.95, 1.05, 0.95],
-            }}
-            transition={{ 
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 3,
-            }}
-          >
-            <LogoFull vertical className="mb-8" />
-          </motion.div>
-          
-          <motion.div
+          {/* Brand Name */}
+          <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="relative z-10 text-lg text-white/80 mt-4"
-            style={{ textShadow: "0 0 10px rgba(255, 194, 7, 0.5)" }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-5xl font-bold tracking-tight mt-4"
+            style={{ fontFamily: 'Poppins, Montserrat, Lato, sans-serif', letterSpacing: '-0.02em' }}
           >
-            I'm you &amp; you're me
-          </motion.div>
-          
-          <motion.div 
-            className="absolute top-16 w-36 h-1 bg-gradient-to-r from-primary to-secondary rounded-full overflow-hidden"
-          >
-            <motion.div 
-              className="h-full bg-white/50"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-            />
-          </motion.div>
+            <span className="text-white">echo</span>
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Me</span>
+          </motion.span>
         </motion.div>
       )}
     </AnimatePresence>

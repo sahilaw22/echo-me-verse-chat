@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Search, Play, Pause, MoreVertical, Download, Edit, Share2, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Mock data for voice effects and cloned voices
 const mockVoiceEffects = [
@@ -123,63 +123,79 @@ export default function Library() {
   );
 }
 
-function VoiceCard({ voice, isPlaying, onPlay }) {
+function VoiceCard({ voice, isPlaying, onPlay }: { voice: { id: string; name: string; type: string; usageCount: number }, isPlaying: boolean, onPlay: () => void }) {
+  // Assign a color/gradient based on type for vibrancy
+  const colorMap: Record<string, string> = {
+    effect: "from-purple-600 to-blue-600",
+    clone: "from-pink-500 to-orange-400",
+    default: "from-amber-500 to-yellow-400",
+  };
+  const shadowMap: Record<string, string> = {
+    effect: "shadow-purple-500/30",
+    clone: "shadow-pink-500/30",
+    default: "shadow-amber-500/30",
+  };
+  const color = colorMap[voice.type] || colorMap.default;
+  const shadow = shadowMap[voice.type] || shadowMap.default;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h3 className="font-medium">{voice.name}</h3>
-              <p className="text-xs text-muted-foreground">
-                Used {voice.usageCount} times
-              </p>
+      <Card className={cn(
+        "glass-morphism group border border-gray-800 transition-all duration-300 hover:shadow-xl hover:border-transparent hover:bg-gradient-to-br",
+        `hover:${color}`
+      )}>
+        <CardContent className="p-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            <div className={cn(
+              "w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br text-white shadow-lg group-hover:scale-110 transition-transform duration-300",
+              color, shadow
+            )}>
+              {voice.type === "effect" ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
             </div>
-            
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onPlay}
-                className="h-8 w-8"
-              >
-                {isPlaying ? (
-                  <Pause className="h-4 w-4" />
-                ) : (
-                  <Play className="h-4 w-4" />
-                )}
-              </Button>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Edit className="h-4 w-4 mr-2" />
-                    Rename
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Share
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-destructive">
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base mb-1 text-white drop-shadow-lg truncate">{voice.name}</h3>
+              <p className="text-xs text-gray-300 opacity-80 truncate">Used {voice.usageCount} times</p>
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="default"
+              size="icon"
+              onClick={onPlay}
+              className={cn("h-10 w-10 shadow-md transition-all", shadow)}
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600">
+                  <MoreVertical className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Rename
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardContent>
       </Card>
